@@ -11,11 +11,11 @@
   (§17.4.1, §17.7.1). NETTOPO solves the unmodified circuit with extra unknowns
   (MATHEMATICS.md §5). Results are identical, but the step text describes
   augmentation rather than the manual shifting procedure.
-* **Matrix methods A, Bf and Qf solve the full topological tableau.** The
-  textbook uses these matrices mainly to *derive* the nodal, loop and node-pair
-  equations. Solving the tableau directly is an implementation choice
-  (MATHEMATICS.md §6) that shows each matrix's role. The tableau has 2b + n − 1
-  (or 2b + b − n + 1) unknowns and can become large to display.
+* **Methods A, Bf and Qf and the textbook.** The book gives one solution
+  procedure per matrix (A → nodal, Bf → loop, Qf → node-pair). NETTOPO runs these
+  as the partitioned procedures of §17.4, §17.7 and §17.10, and the Nodal / Loop /
+  Node-Pair methods as the generalised form of §17.11. Both give the same
+  numbers (MATHEMATICS.md §6).
 * **Zero-ohm resistors are rejected** (use a wire). An open circuit is a missing branch.
 * **Hinged graphs** (§17.8.1) are handled correctly by the f-cut-set algorithm,
   which uses tree components. NETTOPO does not separately enumerate
@@ -43,7 +43,7 @@
   Parallel edges and edges passing through another node are curved.
 * Touch editing works through React Flow, but the editor is tuned for mouse and keyboard.
 * The PDF typesets matrices up to about 23 columns and one page high; larger
-  tableau matrices are replaced by a note (the app shows them in full).
+  matrices are replaced by a note (the app shows them in full).
 
 ## Persistence
 

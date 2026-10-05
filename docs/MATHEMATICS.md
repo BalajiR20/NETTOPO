@@ -205,17 +205,24 @@ block is empty and NETTOPO's equation is the textbook equation exactly.
 
 | Method | Needs | Unknowns | Equations |
 |---|---|---|---|
-| **Incidence Matrix A** | reference node | `vₙ, v, i` | `A i = 0`, `v − Aᵀvₙ = 0`, element relations (topological tableau) |
+| **Incidence Matrix A** | reference node | `vₙ` (+ ideal-V currents) | `Aₚ Yₚ Aₚᵀ vₙ = −A_g I_g` (§17.4, partitioned) |
 | **Nodal Analysis** | reference node | `vₙ` (+ ideal-V currents) | `A Yp Aᵀ vₙ = A(i_g − Yp v_g)` |
-| **Fundamental Circuit Matrix Bf** | spanning tree | `i_l, v, i` | `Bf v = 0`, `i − Bfᵀ i_l = 0`, element relations |
+| **Fundamental Circuit Matrix Bf** | spanning tree | `i_l` (+ ideal-I voltages) | `B_fp Zₚ B_fpᵀ i_l = −B_fg V_g` (§17.7, partitioned) |
 | **Loop Analysis** | spanning tree | `i_l` (+ ideal-I voltages) | `Bf Zp Bfᵀ i_l = Bf(v_g − Zp i_g)` |
-| **Fundamental Cut-Set Matrix Qf** | spanning tree | `v_t, v, i` | `Qf i = 0`, `v − Qfᵀ v_t = 0`, element relations |
+| **Fundamental Cut-Set Matrix Qf** | spanning tree | `v_t` (+ ideal-V currents) | `Q_fp Yₚ Q_fpᵀ v_t = −Q_fg I_g` (§17.10, partitioned) |
 | **Node-Pair Analysis** | spanning tree | `v_t` (+ ideal-V currents) | `Qf Yp Qfᵀ v_t = Qf(i_g − Yp v_g)` |
 
-[Implementation decision] The three "matrix" methods (A, Bf, Qf) solve the
-**topological tableau**: the KCL set, the KVL set and the `b` element relations,
-taken together with no elimination. This shows the matrix's role directly. The
-three "analysis" methods eliminate variables exactly as the textbook does.
+**TEXTBOOK CONCEPT.** The three "matrix" methods (A, Bf, Qf) run the book's
+*partitioned* procedures. Branches are numbered passive-first, sources-last, so
+`T = [T_p  T_g]`; only the passive part meets the branch relation, giving
+`Yₙ = Aₚ Yₚ Aₚᵀ` (17.4), `Z_L = B_fp Zₚ B_fpᵀ` (17.7) and `Yₜ = Q_fp Yₚ Q_fpᵀ` (17.10),
+solved as `x = −[core]⁻¹ T_g g`. `Yₚ`/`Zₚ` here are bₚ × bₚ (passive branches only).
+
+**IMPLEMENTATION DETAIL.** The book removes the *other* kind of ideal source by
+v-shift / i-shift. NETTOPO appends a third partition `T_a` with the augmentation of
+§5 instead, so the circuit is not edited. The three "analysis" methods (Nodal,
+Loop, Node-Pair) use the equivalent generalised-branch form of §17.11 with
+b × b matrices. Both families give the same numbers.
 
 **Lazy rule:** only the matrices a method needs are ever built (§2 of the
 product specification). Nodal never builds a tree; loop never builds `A`.

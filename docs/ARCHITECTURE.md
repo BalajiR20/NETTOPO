@@ -29,7 +29,7 @@ node/edge objects are a *view* of the schematic, never the model.
 │ Topology engine     src/engine/topology       A, tree, Bf, Qf │
 ├──────────────────────────────────────────────────────────────┤
 │ Analysis engine     src/engine/solvers        incidence,      │
-│                     nodal, loop, nodePair (+ tableau variants)│
+│                     nodal, loop, nodePair, common/partitioned │
 ├──────────────────────────────────────────────────────────────┤
 │ Numerical engine    src/engine/numerical      math.js wrapper,│
 │                     rank, conditioning, residuals, formatting │

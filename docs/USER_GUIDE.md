@@ -63,7 +63,7 @@ you, preferring voltage sources as twigs and current sources as links. Then
 
 ## 4. Reading the results
 
-* **Analysis tab:** 13 expandable steps. Each has a **WHY?** that refers to Chapter 17.
+* **Analysis tab:** expandable calculation steps. Each has a **WHY?** that refers to Chapter 17.
 * **Matrix tab:** click a column header to highlight its branch, a row header to
   highlight its node / f-circuit / f-cut-set, and an entry to see why it has that
   value. The *Twigs | links* switch shows the textbook partitioned form.

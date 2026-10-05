@@ -28,9 +28,12 @@ to exactly one solver. Every solver:
 ## The six methods
 
 ### Incidence Matrix A (`solvers/incidence`) — needs a reference node
-Unknowns `[vₙ; v; i]` (size n − 1 + 2b).
-`A i = 0` (KCL), `v − Aᵀvₙ = 0` (node transformation), element relations.
-Matrices shown: `Aa`, `A`, tableau `M | r`.
+Textbook procedure of §17.3–17.4 (shared engine: `solvers/common/partitioned.ts`):
+partition `A = [Aₚ  A_g]` (passive | current sources), `Yₙ = Aₚ Yₚ Aₚᵀ`,
+`Vₙ = −Yₙ⁻¹ A_g I_g`, then `V = AᵀVₙ` and `Iₚ = Yₚ Vₚ`. Here `Yₚ` is the bₚ × bₚ
+matrix of the passive branches only. Ideal V-sources form a third partition `A_v`
+(extra unknown `I_v` and constraint `A_vᵀ Vₙ = V_v`; replaces the book's v-shift).
+Matrices shown: `Aa`, `A`, `Ap`, `Ag` (`Av`), `Yp`, `Yn` (+ augmented `M`).
 
 ### Nodal (`solvers/nodal`) — needs a reference node
 `Yₙ = A Yp Aᵀ`, `r = A(i_g − Yp v_g)`. Each ideal V-source adds its current as
@@ -38,8 +41,11 @@ an unknown, plus the constraint `A_Vᵀ vₙ = v_V` (MATHEMATICS.md §5).
 Matrices shown: `A`, `Yp`, `Yₙ` (+ augmented `M` if there are V-sources).
 
 ### Fundamental Circuit Matrix Bf (`solvers/loop/fcircuitMethod`) — needs a tree
-Unknowns `[iₗ; v; i]` (size b − n + 1 + 2b).
-`Bf v = 0` (KVL), `i − Bfᵀ iₗ = 0`, element relations. Matrices: `Bf`, tableau.
+Textbook procedure of §17.6–17.7: partition `Bf = [B_fg  B_fp]` (voltage sources |
+passive), `Z_L = B_fp Zₚ B_fpᵀ`, `Iₗ = −Z_L⁻¹ B_fg V_g`, then `I = BfᵀIₗ` and
+`Vₚ = Zₚ Iₚ`. Ideal I-sources form a third partition `B_fi` (extra unknown `V_i`,
+constraint `B_fiᵀ Iₗ = I_i`; replaces the book's i-shift).
+Matrices: `Bf`, `Bfp`, `Bfg` (`Bfi`), `Zp`, `ZL` (+ augmented `M`).
 
 ### Loop (`solvers/loop`) — needs a tree
 `Z_L = Bf Zp Bfᵀ`, `r = Bf(v_g − Zp i_g)`. Each ideal I-source adds its voltage
@@ -47,7 +53,17 @@ as an unknown, plus the constraint `B_Iᵀ iₗ = i_I`.
 Matrices: `Bf`, `Zp`, `Z_L` (+ augmented `M`).
 
 ### Fundamental Cut-Set Matrix Qf (`solvers/nodePair/fcutsetMethod`) — needs a tree
-Unknowns `[vₜ; v; i]`. `Qf i = 0` (KCL), `v − Qfᵀ vₜ = 0`, element relations.
+Textbook procedure of §17.9–17.10: partition `Qf = [Q_fg  Q_fp]` (current sources |
+passive), `Yₜ = Q_fp Yₚ Q_fpᵀ`, `Vₜ = −Yₜ⁻¹ Q_fg I_g`, then `V = QfᵀVₜ` and
+`Iₚ = Yₚ Vₚ`. Ideal V-sources form a third partition `Q_fv` (as for A).
+Matrices: `Qf`, `Qfp`, `Qfg` (`Qfv`), `Yp`, `Yt` (+ augmented `M`).
+
+> **Why do A/Bf/Qf and Nodal/Loop/Node-pair give the same equation?** The book has
+> one solution procedure per matrix: A → nodal, Bf → loop, Qf → node-pair. NETTOPO's
+> A, Bf and Qf methods run the book's **partitioned** procedure (§17.4, §17.7,
+> §17.10: passive branches first, sources last). Nodal, Loop and Node-Pair run the
+> **generalised-branch** form of §17.11. They are the same mathematics in two
+> textbook notations, so the numbers agree; the step lists differ.
 
 ### Node-Pair (`solvers/nodePair`) — needs a tree
 `Yₜ = Qf Yp Qfᵀ`, `r = Qf(i_g − Yp v_g)`. Ideal V-sources are augmented as in nodal.
@@ -57,7 +73,7 @@ Unknowns `[vₜ; v; i]`. `Qf i = 0` (KCL), `v − Qfᵀ vₜ = 0`, element relat
 `AnalysisResult` contains the method, network snapshot, reference node,
 potential reference, tree info (with f-circuits / f-cut-sets when built),
 labelled matrices, equation groups, unknowns, solution, primary unknowns,
-node voltages, branch currents / voltages / power, verification, 13 steps,
+node voltages, branch currents / voltages / power, verification, calculation steps,
 warnings and solver info (size, rank, residual, κ₁ estimate).
 
 ## Failures (never NaN)
