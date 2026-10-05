@@ -42,7 +42,7 @@ internet requirement once it is installed.
 * **Lazy analysis.** While you edit, only nodes, branches and connectivity are computed. A, Bf, Qf, trees and equations are built only for the method you select.
 * **Interactive spanning-tree selection** with live validation (twig count, nodes covered, connectivity, cycle detection), *Suggest valid tree*, and the det(A Aᵀ) tree count.
 * **Interactive matrices and equations.** Click a matrix column, row or entry, or a variable such as `i₂` in a KaTeX equation, and the matching branch, node, f-circuit or f-cut-set is highlighted everywhere. Each matrix entry explains why it is +1, −1 or 0.
-* **Step-by-step analysis** (13 steps), each with a *WHY?* explanation that cites Chapter 17.
+* **Step-by-step analysis** with *WHY?* explanations that cite Chapter 17. The steps reflect the selected method and its configuration.
 * **Verification engine:** KCL, KVL, element relations, Tellegen's theorem, A·Bfᵀ = 0, Qf·Bfᵀ = 0, tree validity, rank and numerical residual. Each check shows its real residual and PASS / WARNING / FAIL.
 * **Results on the circuit:** currents (with the actual direction when negative), voltages with polarity, absorbed/delivered power, and an optional *mathematical current-flow visualization*.
 * **Custom oscilloscope** (HTML Canvas, 4 channels) driven by the actual result.
@@ -269,7 +269,7 @@ The full walkthrough is in [docs/USER_GUIDE.md](docs/USER_GUIDE.md). Press **?**
 
 | Command | What it runs | Notes |
 |---|---|---|
-| `npm test` | 153 unit + integration tests (Vitest + React Testing Library, jsdom) | no browser needed, takes a few seconds |
+| `npm test` | Unit + integration tests (Vitest + React Testing Library, jsdom) | no browser needed |
 | `npm run test:watch` | Vitest in watch mode | re-runs on file save |
 | `npm run test:coverage` | tests with a coverage report in `coverage/` | |
 | `npm run test:e2e` | 4 Playwright end-to-end tests in Chromium | starts its own dev server on port **5174**; requires `npx playwright install chromium` once |
@@ -334,7 +334,7 @@ NETTOPO/
 │   ├── engine/              Pure TypeScript engines (no React)
 │   │   ├── graph/           Connectivity, paths, cycles, components
 │   │   ├── topology/        Incidence, tree, fundamental circuits, cut-sets
-│   │   ├── solvers/         incidence, nodal, loop (+Bf), nodePair (+Qf), comparison
+│   │   ├── solvers/         incidence, nodal, loop (+Bf), nodePair (+Qf), shared partitioned engine, comparison
 │   │   ├── numerical/       math.js wrapper, rank, residuals, formatting
 │   │   ├── verification/    KCL, KVL, Tellegen, orthogonality, …
 │   │   ├── simulation/      Signal model and oscilloscope renderer

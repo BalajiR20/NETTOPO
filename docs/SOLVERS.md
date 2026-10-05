@@ -61,9 +61,11 @@ Matrices: `Qf`, `Qfp`, `Qfg` (`Qfv`), `Yp`, `Yt` (+ augmented `M`).
 > **Why do A/Bf/Qf and Nodal/Loop/Node-pair give the same equation?** The book has
 > one solution procedure per matrix: A → nodal, Bf → loop, Qf → node-pair. NETTOPO's
 > A, Bf and Qf methods run the book's **partitioned** procedure (§17.4, §17.7,
-> §17.10: passive branches first, sources last). Nodal, Loop and Node-Pair run the
-> **generalised-branch** form of §17.11. They are the same mathematics in two
-> textbook notations, so the numbers agree; the step lists differ.
+> §17.10: passive branches and the relevant source branches are treated as
+> separate partitions). NETTOPO preserves branch indices and extracts the
+> partition matrices; it does not renumber the circuit branches. Nodal, Loop and
+> Node-Pair run the **generalised-branch** form of §17.11. They are the same
+> mathematics in two textbook notations, so the numbers agree; the step lists differ.
 
 ### Node-Pair (`solvers/nodePair`) — needs a tree
 `Yₜ = Qf Yp Qfᵀ`, `r = Qf(i_g − Yp v_g)`. Ideal V-sources are augmented as in nodal.

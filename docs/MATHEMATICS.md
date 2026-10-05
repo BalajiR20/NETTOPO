@@ -213,16 +213,20 @@ block is empty and NETTOPO's equation is the textbook equation exactly.
 | **Node-Pair Analysis** | spanning tree | `v_t` (+ ideal-V currents) | `Qf Yp Qfᵀ v_t = Qf(i_g − Yp v_g)` |
 
 **TEXTBOOK CONCEPT.** The three "matrix" methods (A, Bf, Qf) run the book's
-*partitioned* procedures. Branches are numbered passive-first, sources-last, so
-`T = [T_p  T_g]`; only the passive part meets the branch relation, giving
+*partitioned* procedures. In the derivation, branches are grouped passive-first,
+then by source type, so `T = [T_p  T_g]`; only the passive part meets the branch relation, giving
 `Yₙ = Aₚ Yₚ Aₚᵀ` (17.4), `Z_L = B_fp Zₚ B_fpᵀ` (17.7) and `Yₜ = Q_fp Yₚ Q_fpᵀ` (17.10),
-solved as `x = −[core]⁻¹ T_g g`. `Yₚ`/`Zₚ` here are bₚ × bₚ (passive branches only).
+solved as `x = −[core]⁻¹ T_g g` when no additional ideal-source constraints are needed.
+`Yₚ`/`Zₚ` here are bₚ × bₚ (passive branches only).
 
 **IMPLEMENTATION DETAIL.** The book removes the *other* kind of ideal source by
 v-shift / i-shift. NETTOPO appends a third partition `T_a` with the augmentation of
-§5 instead, so the circuit is not edited. The three "analysis" methods (Nodal,
-Loop, Node-Pair) use the equivalent generalised-branch form of §17.11 with
-b × b matrices. Both families give the same numbers.
+§5 instead, so the circuit is not edited; when this partition is present, the
+core equation and its source constraints are assembled into an augmented system.
+NETTOPO preserves the circuit's branch indices and order rather than renumbering
+branches for the derivation; `Tₚ`, `T_g` and `T_a` are extracted partition matrices.
+The three "analysis" methods (Nodal, Loop, Node-Pair) use the equivalent
+generalised-branch form of §17.11 with b × b matrices. Both families give the same numbers.
 
 **Lazy rule:** only the matrices a method needs are ever built (§2 of the
 product specification). Nodal never builds a tree; loop never builds `A`.
